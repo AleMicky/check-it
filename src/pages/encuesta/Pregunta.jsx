@@ -4,10 +4,12 @@ import {
     AccordionDetails,
     AccordionSummary,
     Box,
-    Button, ButtonGroup,
+    Button,
+    ButtonGroup,
     Card,
     CardActions,
     CardContent,
+    Container, Fab,
     FormControl,
     FormControlLabel,
     IconButton,
@@ -30,155 +32,216 @@ import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked';
 import AddIcon from '@mui/icons-material/Add';
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 import ClearIcon from '@mui/icons-material/Clear';
+import SaveIcon from '@mui/icons-material/Save';
 
-
-const buttons = [
-    <Button key="one">Add</Button>,
-];
 
 export const Pregunta = () => {
+        /* const [respuesta, setRespuesta] = useState();
+         const handleChangeAdd = () => {
+             setRespuesta(respuesta => [...respuesta, {
+                 respuesta: 'Opción'
+             }])
+         }
+
+         const handleChangeClear = (index) => {
+             if (respuesta.length === 1) return;
+             setRespuesta([
+                 ...respuesta.splice(0, index),
+                 ...respuesta.splice(index + 1, respuesta.length)
+             ])
+         }
 
 
-    const [respuesta, setRespuesta] = useState([
-        {
-            respuesta: 'Opción'
+         const [expanded, setExpanded] = useState(false);
+
+         const handleChange = (panel) => (event, isExpanded) => {
+             setExpanded(isExpanded ? panel : false);
+         };
+
+         const [pregunta, setPregunta] = useState([
+             {
+                 pregunta: 'Como esta el servicio'
+             },
+             {
+                 pregunta: 'Como esta la atencio'
+             },
+             {
+                 pregunta: 'Como se encuentra'
+             },
+         ]);
+         const handleChangePregunta = () => {
+             setPregunta(pregunta => [...pregunta, {
+                 pregunta: ''
+             }])
+         }*/
+
+        const [encuesta, setEncuesta] = useState('');
+
+        const [tipoRespuesta, setTipoRespuesto] = useState('opcion');
+
+        const handleChangeSelect = (event) => {
+            setTipoRespuesto(event.target.value);
+        };
+
+        const [pregunta, setPregunta] = useState([
+            {
+                pregunta: 'Como esta el servicio',
+                respuesta: [
+                    {
+                        respuesta: 'Opción'
+                    }
+                ]
+            },
+            {
+                pregunta: 'Como esta la atencio',
+                respuesta: [
+                    {
+                        respuesta: 'Opción'
+                    }
+                ]
+            },
+            {
+                pregunta: 'Como se encuentra',
+                respuesta: [
+                    {
+                        respuesta: 'Opción'
+                    }
+                ]
+            },
+        ]);
+
+        const handleChangeNewPregunta = () => {
+            setPregunta(pregunta => [...pregunta, {
+                pregunta: ''
+            }])
         }
-    ]);
-    const handleChangeAdd = () => {
-        setRespuesta(respuesta => [...respuesta, {
-            respuesta: 'Opción'
-        }])
-    }
+        const handleChangeClearPregunta = (index) => {
+            if (pregunta.length === 1) return;
+            setPregunta([
+                ...pregunta.splice(0, index),
+                ...pregunta.splice(index + 1, pregunta.length)
+            ])
+        }
 
-    const handleChangeClear = (index) => {
-        if (respuesta.length === 1) return;
-        setRespuesta([
-            ...respuesta.splice(0, index),
-            ...respuesta.splice(index + 1, respuesta.length)
-        ])
-    }
 
-    const [age, setAge] = useState('opcion');
-    const handleChangeSelect = (event) => {
-        setAge(event.target.value);
-    };
-    const [expanded, setExpanded] = useState(false);
-
-    const handleChange = (panel) => (event, isExpanded) => {
-        setExpanded(isExpanded ? panel : false);
-    };
-
-    const [pregunta, setPregunta] = useState([
-        {
-            pregunta: 'Como esta el servicio'
-        },
-        {
-            pregunta: 'Como esta la atencio'
-        },
-        {
-            pregunta: 'Como se encuentra'
-        },
-    ]);
-    const handleChangePregunta = () => {
-        setPregunta(pregunta => [...pregunta, {
-            pregunta: ''
-        }])
-    }
-
-    return (
-        <React.Fragment>
-            <Toolbar/>
-            <Box sx={{flexDirection: 'row-reverse', justifyContent: 'center', alignItems: 'center'}}>
-                <Box sx={{width: 700, marginTop: 5, marginBottom: 5}}>
+        return (
+            <Container maxWidth="sm">
+                <Toolbar/>
+                <Typography component="h1"
+                            variant="h2"
+                            align="center"
+                            color="text.primary"
+                            gutterBottom>
+                    Crear Encuesta
+                </Typography>
+                <Box sx={style.container}>
                     <Card>
                         <CardContent>
-                            <Box sx={{
-                                width: 700,
-                                maxWidth: '100%',
-                            }}>
+                            <Box sx={style.cardEncuesta}>
                                 <TextField fullWidth
-                                           id="outlined-basic"
                                            label="Encuesta"
-                                           variant="standard"/>
+                                           variant="standard"
+                                           onChange={e => setEncuesta(e.target.value)}
+                                           value={encuesta}/>
                             </Box>
                         </CardContent>
                     </Card>
                 </Box>
-                <Box sx={{width: 700, marginBottom: 3}}>
-                    {
-                        pregunta.map(({id, pregunta}, index) => {
-                            let accordionId = `panel-${index}`;
-                            return (
-                                <Accordion key={index} expanded={expanded === accordionId}
-                                           onChange={handleChange(accordionId)}>
-                                    <AccordionSummary aria-controls={`panel-${index}-a-content`}
-                                                      id={`panel1a-header-${index}`}>
-                                        <Typography>{pregunta}</Typography>
-                                    </AccordionSummary>
-                                    <AccordionDetails>
-                                        <Stack direction="row" spacing={1}>
-                                            <Box sx={{minWidth: 300}}>
-                                                <TextField fullWidth id="filled-basic" label="Pregunta"
-                                                           variant="filled"/>
-                                            </Box>
-                                            <IconButton aria-label="imagen">
-                                                <ImageIcon/>
-                                            </IconButton>
-                                            <Box sx={{minWidth: 300}}>
-                                                <FormControl fullWidth>
-                                                    <InputLabel>Varias opciones</InputLabel>
-                                                    <Select
-                                                        labelId="demo-simple-select-label"
-                                                        value={age}
-                                                        label="Tipo Respuesta"
-                                                        onChange={handleChangeSelect}>
-                                                        <MenuItem value={'opcion'}>Varias opciones</MenuItem>
-                                                        <MenuItem value={'casiilla'}>Casilla</MenuItem>
-                                                    </Select>
-                                                </FormControl>
-                                            </Box>
-                                        </Stack>
-                                        <Box sx={{width: '100%', maxWidth: 300, bgcolor: 'background.paper'}}>
-                                            <List>
-                                                { respuesta.map(({respuesta}, index) => (
-                                                    <ListItem disablePadding key={index}>
-                                                    <ListItemIcon>
-                                                {
-                                                    age === 'opcion' ? <RadioButtonUncheckedIcon/> :
-                                                    <CheckBoxOutlineBlankIcon/>
-                                                }
-                                                    </ListItemIcon>
-                                                    <Box sx={{minWidth: 550}}>
-                                                    <TextField fullWidth id="filled-basic"
-                                                    label={`Opcion ${index + 1}`}
-                                                    variant="standard"/>
-                                                    </Box>
-                                                    <IconButton aria-label="add"
-                                                    onClick={() => handleChangeClear(index)}>
+                {
+                    pregunta.map(({pregunta, respuesta}, index) => (
+                        <Card sx={{minWidth: 600, marginTop: 3}} key={index}>
+                            <CardContent>
+                                <Stack direction="row" spacing={1}>
+                                    <Box sx={{minWidth: 260}}>
+                                        <TextField fullWidth
+                                                   label="Pregunta"
+                                                   variant="filled"
+                                                   value={pregunta}/>
+                                    </Box>
+                                    <IconButton aria-label="imagen">
+                                        <ImageIcon/>
+                                    </IconButton>
+                                    <Box sx={{minWidth: 260}}>
+                                        <FormControl fullWidth>
+                                            <InputLabel>Varias opciones</InputLabel>
+                                            <Select
+                                                value={tipoRespuesta}
+                                                label="Tipo Respuesta"
+                                                variant="filled"
+                                                onChange={handleChangeSelect}>
+                                                <MenuItem value={'opcion'}>Varias opciones</MenuItem>
+                                                <MenuItem value={'casiilla'}>Casilla</MenuItem>
+                                            </Select>
+                                        </FormControl>
+                                    </Box>
+                                </Stack>
+                                <Box sx={{width: '100%', maxWidth: 300, bgcolor: 'background.paper'}}>
+                                    <List>
+                                        {respuesta.map(({respuesta}, i) => (
+                                            <ListItem disablePadding key={i}>
+                                                <ListItemIcon>
+                                                    {
+                                                        tipoRespuesta === 'opcion' ? <RadioButtonUncheckedIcon/> :
+                                                            <CheckBoxOutlineBlankIcon/>
+                                                    }
+                                                </ListItemIcon>
+                                                <Box sx={{minWidth: 400}}>
+                                                    <TextField fullWidth
+                                                               label={`Opcion ${i + 1}`}
+                                                               variant="standard"/>
+                                                </Box>
+                                                <IconButton aria-label="add"
+                                                            onClick={() => console.log(1)}>
                                                     <ClearIcon/>
-                                                    </IconButton>
-                                                    </ListItem>
-                                                    ))
-                                                }
-                                            </List>
-                                            <IconButton aria-label="add" onClick={handleChangeAdd}>
-                                                <AddIcon/>
-                                            </IconButton>
-                                        </Box>
-                                    </AccordionDetails>
-                                </Accordion>
-                            )
-                        })
-                    }
-                </Box>
-                <ButtonGroup
-                    orientation="vertical"
-                    aria-label="vertical contained button group"
-                    variant="contained"
-                    onClick={handleChangePregunta}>
-                    {buttons}
-                </ButtonGroup>
-            </Box>
-        </React.Fragment>
-    );
-};
+                                                </IconButton>
+                                            </ListItem>
+                                        ))
+                                        }
+                                    </List>
+                                    <IconButton aria-label="add" onClick={() => console.log(1)}>
+                                        <AddIcon/>
+                                    </IconButton>
+                                </Box>
+                            </CardContent>
+                            <CardActions>
+                                <IconButton aria-label="elminar" onClick={() => handleChangeClearPregunta(index)}>
+                                    <DeleteIcon/>
+                                </IconButton>
+                                <IconButton aria-label="nuevo" onClick={handleChangeNewPregunta}>
+                                    <AddIcon/>
+                                </IconButton>
+                                <FormControlLabel control={<Switch defaultChecked/>} label="Obligatorio"/>
+                            </CardActions>
+                        </Card>
+                    ))
+                }
+                <Fab sx={style.fab}
+                     color="primary"
+                     aria-label="add"
+                     onClick={() => navigate('/pregunta')}>
+                    <SaveIcon/>
+                </Fab>
+            </Container>
+        )
+            ;
+    }
+;
+const style = {
+    container: {
+        width: 600,
+        marginTop: 5,
+        marginBottom: 5
+    },
+    cardEncuesta: {
+        width: 700,
+        maxWidth: '100%',
+    },
+    fab: {
+        margin: 0,
+        top: 'auto',
+        right: 20,
+        bottom: 20,
+        left: 'auto',
+        position: 'fixed',
+    }
+}
