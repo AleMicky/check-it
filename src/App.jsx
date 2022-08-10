@@ -10,6 +10,9 @@ import {Outlet} from "react-router-dom";
 import Routes from "./routers/Routes";
 
 
+
+
+
 export function Dashboard() {
     const [open, setOpen] = useState(false);
     const toggleDrawer = () => {
@@ -41,10 +44,9 @@ export function Dashboard() {
 const mdTheme = createTheme();
 
 export default function App() {
-
     return (
         <ThemeProvider theme={mdTheme}>
-            <Routes/>
-        </ThemeProvider>
+             <Routes/>
+         </ThemeProvider>
     );
 }

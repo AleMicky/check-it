@@ -1,247 +1,185 @@
 import React, {useState} from 'react';
 import {
-    Accordion,
-    AccordionDetails,
-    AccordionSummary,
     Box,
-    Button,
-    ButtonGroup,
-    Card,
-    CardActions,
-    CardContent,
-    Container, Fab,
-    FormControl,
-    FormControlLabel,
-    IconButton,
-    InputLabel,
-    List,
-    ListItem,
-    ListItemIcon,
-    MenuItem,
-    Select,
-    Stack,
-    Switch,
+    Button, Card, CardContent,
+    Container, FormControl,
+    Grid, IconButton, InputLabel, MenuItem,
+    Paper, Select, Stack,
+    Step,
+    StepLabel,
+    Stepper,
     TextField,
     Toolbar,
     Typography
 } from "@mui/material";
 import ImageIcon from '@mui/icons-material/Image';
-import ContentCopyIcon from '@mui/icons-material/ContentCopy';
-import DeleteIcon from '@mui/icons-material/Delete';
-import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked';
-import AddIcon from '@mui/icons-material/Add';
-import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
-import ClearIcon from '@mui/icons-material/Clear';
-import SaveIcon from '@mui/icons-material/Save';
 
 
-export const Pregunta = () => {
-        /* const [respuesta, setRespuesta] = useState();
-         const handleChangeAdd = () => {
-             setRespuesta(respuesta => [...respuesta, {
-                 respuesta: 'Opción'
-             }])
-         }
-
-         const handleChangeClear = (index) => {
-             if (respuesta.length === 1) return;
-             setRespuesta([
-                 ...respuesta.splice(0, index),
-                 ...respuesta.splice(index + 1, respuesta.length)
-             ])
-         }
-
-
-         const [expanded, setExpanded] = useState(false);
-
-         const handleChange = (panel) => (event, isExpanded) => {
-             setExpanded(isExpanded ? panel : false);
-         };
-
-         const [pregunta, setPregunta] = useState([
-             {
-                 pregunta: 'Como esta el servicio'
-             },
-             {
-                 pregunta: 'Como esta la atencio'
-             },
-             {
-                 pregunta: 'Como se encuentra'
-             },
-         ]);
-         const handleChangePregunta = () => {
-             setPregunta(pregunta => [...pregunta, {
-                 pregunta: ''
-             }])
-         }*/
-
-        const [encuesta, setEncuesta] = useState('');
-
-        const [tipoRespuesta, setTipoRespuesto] = useState('opcion');
-
-        const handleChangeSelect = (event) => {
-            setTipoRespuesto(event.target.value);
-        };
-
-        const [pregunta, setPregunta] = useState([
-            {
-                pregunta: 'Como esta el servicio',
-                respuesta: [
-                    {
-                        respuesta: 'Opción'
-                    }
-                ]
-            },
-            {
-                pregunta: 'Como esta la atencio',
-                respuesta: [
-                    {
-                        respuesta: 'Opción'
-                    }
-                ]
-            },
-            {
-                pregunta: 'Como se encuentra',
-                respuesta: [
-                    {
-                        respuesta: 'Opción'
-                    }
-                ]
-            },
-        ]);
-
-        const handleChangeNewPregunta = () => {
-            setPregunta(pregunta => [...pregunta, {
-                pregunta: ''
-            }])
-        }
-        const handleChangeClearPregunta = (index) => {
-            if (pregunta.length === 1) return;
-            setPregunta([
-                ...pregunta.splice(0, index),
-                ...pregunta.splice(index + 1, pregunta.length)
-            ])
-        }
+const Encuesta = () => {
+    return (
+        <React.Fragment>
+            <Typography variant="h6" gutterBottom>
+                Encuesta
+            </Typography>
+            <Grid container spacing={3}>
+                <Grid item xs={12}>
+                    <TextField
+                        required
+                        name="nombre"
+                        label="Nombre"
+                        fullWidth
+                    />
+                </Grid>
+                <Grid item xs={12}>
+                    <TextField
+                        required
+                        name="descripcion"
+                        label="Descripción"
+                        fullWidth
+                    />
+                </Grid>
+                <Grid item xs={12}>
+                    <FormControl fullWidth>
+                        <InputLabel id="demo-simple-select-standard-label">Entidad</InputLabel>
+                        <Select
+                            label="Entidad"
+                            labelId="demo-simple-select-standard-label"
+                            id="demo-simple-select-standard">
+                            <MenuItem value="">
+                                <em>None</em>
+                            </MenuItem>
+                            <MenuItem value={1}>FarmaCoorp</MenuItem>
+                            <MenuItem value={2}>Helias</MenuItem>
+                        </Select>
+                    </FormControl>
+                </Grid>
+            </Grid>
+        </React.Fragment>
+    )
+};
 
 
-        return (
-            <Container maxWidth="sm">
-                <Toolbar/>
-                <Typography component="h1"
-                            variant="h2"
-                            align="center"
-                            color="text.primary"
-                            gutterBottom>
-                    Crear Encuesta
-                </Typography>
-                <Box sx={style.container}>
-                    <Card>
-                        <CardContent>
-                            <Box sx={style.cardEncuesta}>
-                                <TextField fullWidth
-                                           label="Encuesta"
-                                           variant="standard"
-                                           onChange={e => setEncuesta(e.target.value)}
-                                           value={encuesta}/>
-                            </Box>
-                        </CardContent>
-                    </Card>
-                </Box>
-                {
-                    pregunta.map(({pregunta, respuesta}, index) => (
-                        <Card sx={{minWidth: 600, marginTop: 3}} key={index}>
-                            <CardContent>
-                                <Stack direction="row" spacing={1}>
-                                    <Box sx={{minWidth: 260}}>
-                                        <TextField fullWidth
-                                                   label="Pregunta"
-                                                   variant="filled"
-                                                   value={pregunta}/>
-                                    </Box>
-                                    <IconButton aria-label="imagen">
-                                        <ImageIcon/>
-                                    </IconButton>
-                                    <Box sx={{minWidth: 260}}>
-                                        <FormControl fullWidth>
-                                            <InputLabel>Varias opciones</InputLabel>
-                                            <Select
-                                                value={tipoRespuesta}
-                                                label="Tipo Respuesta"
-                                                variant="filled"
-                                                onChange={handleChangeSelect}>
-                                                <MenuItem value={'opcion'}>Varias opciones</MenuItem>
-                                                <MenuItem value={'casiilla'}>Casilla</MenuItem>
-                                            </Select>
-                                        </FormControl>
-                                    </Box>
-                                </Stack>
-                                <Box sx={{width: '100%', maxWidth: 300, bgcolor: 'background.paper'}}>
-                                    <List>
-                                        {respuesta.map(({respuesta}, i) => (
-                                            <ListItem disablePadding key={i}>
-                                                <ListItemIcon>
-                                                    {
-                                                        tipoRespuesta === 'opcion' ? <RadioButtonUncheckedIcon/> :
-                                                            <CheckBoxOutlineBlankIcon/>
-                                                    }
-                                                </ListItemIcon>
-                                                <Box sx={{minWidth: 400}}>
-                                                    <TextField fullWidth
-                                                               label={`Opcion ${i + 1}`}
-                                                               variant="standard"/>
-                                                </Box>
-                                                <IconButton aria-label="add"
-                                                            onClick={() => console.log(1)}>
-                                                    <ClearIcon/>
-                                                </IconButton>
-                                            </ListItem>
-                                        ))
-                                        }
-                                    </List>
-                                    <IconButton aria-label="add" onClick={() => console.log(1)}>
-                                        <AddIcon/>
-                                    </IconButton>
-                                </Box>
-                            </CardContent>
-                            <CardActions>
-                                <IconButton aria-label="elminar" onClick={() => handleChangeClearPregunta(index)}>
-                                    <DeleteIcon/>
-                                </IconButton>
-                                <IconButton aria-label="nuevo" onClick={handleChangeNewPregunta}>
-                                    <AddIcon/>
-                                </IconButton>
-                                <FormControlLabel control={<Switch defaultChecked/>} label="Obligatorio"/>
-                            </CardActions>
-                        </Card>
-                    ))
-                }
-                <Fab sx={style.fab}
-                     color="primary"
-                     aria-label="add"
-                     onClick={() => navigate('/pregunta')}>
-                    <SaveIcon/>
-                </Fab>
-            </Container>
-        )
-            ;
-    }
-;
-const style = {
-    container: {
-        width: 600,
-        marginTop: 5,
-        marginBottom: 5
-    },
-    cardEncuesta: {
-        width: 700,
-        maxWidth: '100%',
-    },
-    fab: {
-        margin: 0,
-        top: 'auto',
-        right: 20,
-        bottom: 20,
-        left: 'auto',
-        position: 'fixed',
+function CardPregunta() {
+    return (
+        <Card>
+            <CardContent>
+                <Stack direction="row" spacing={1}>
+                    <TextField fullWidth
+                               label="Pregunta"
+                               variant="filled"/>
+                    <IconButton aria-label="imagen">
+                        <ImageIcon/>
+                    </IconButton>
+                </Stack>
+            </CardContent>
+        </Card>
+    );
+}
+
+const PreguntaRespuesta = () => {
+    return (
+        <React.Fragment>
+            <Typography variant="h6" gutterBottom>
+                Pregunta
+            </Typography>
+            <Grid container spacing={3}>
+                <Grid item xs={12}>
+                    <CardPregunta/>
+                </Grid>
+            </Grid>
+        </React.Fragment>
+    )
+};
+
+
+const Resumen = () => {
+    return (
+        <React.Fragment>
+            <Typography variant="h6" gutterBottom>
+                Resumen
+            </Typography>
+        </React.Fragment>
+    )
+};
+
+
+const steps = ['Encuesta', 'Pregunta', 'Resumen'];
+
+function getStepContent(step) {
+    switch (step) {
+        case 0:
+            return <Encuesta/>;
+        case 1:
+            return <PreguntaRespuesta/>;
+        case 2:
+            return <Resumen/>;
+        default:
+            throw new Error('Unknown step');
     }
 }
+
+export const Pregunta = () => {
+
+    const [activeStep, setActiveStep] = useState(0);
+
+    const handleNext = () => {
+        setActiveStep(activeStep + 1);
+    };
+
+    const handleBack = () => {
+        setActiveStep(activeStep - 1);
+    };
+    return (
+        <React.Fragment>
+            <Toolbar/>
+            <Container component="main" maxWidth="sm" sx={{mb: 4}}>
+                <Paper variant="outlined" sx={{my: {xs: 3, md: 6}, p: {xs: 2, md: 3}}}>
+                    <Typography component="h1" variant="h4" align="center">
+                        Nuevo Encuesta
+                    </Typography>
+                    <Stepper activeStep={activeStep} sx={{pt: 3, pb: 5}}>
+                        {steps.map((label) => (
+                            <Step key={label}>
+                                <StepLabel>{label}</StepLabel>
+                            </Step>
+                        ))}
+                    </Stepper>
+                    <React.Fragment>
+                        {activeStep === steps.length ? (
+                            <React.Fragment>
+                                <Typography variant="h5" gutterBottom>
+                                    Thank you for your order.
+                                </Typography>
+                                <Typography variant="subtitle1">
+                                    Your order number is #2001539. We have emailed your order
+                                    confirmation, and will send you an update when your order has
+                                    shipped.
+                                </Typography>
+                            </React.Fragment>
+                        ) : (
+                            <React.Fragment>
+                                {getStepContent(activeStep)}
+                                <Box sx={{display: 'flex', justifyContent: 'flex-end'}}>
+                                    {activeStep !== 0 && (
+                                        <Button onClick={handleBack} sx={{mt: 3, ml: 1}}>
+                                            Atras
+                                        </Button>
+                                    )}
+
+                                    <Button
+                                        variant="contained"
+                                        onClick={handleNext}
+                                        sx={{mt: 3, ml: 1}}
+                                    >
+                                        {activeStep === steps.length - 1 ? 'Realizar Encuesta' : 'Siguente'}
+                                    </Button>
+                                </Box>
+                            </React.Fragment>
+                        )}
+                    </React.Fragment>
+                </Paper>
+            </Container>
+        </React.Fragment>
+    );
+}
+
