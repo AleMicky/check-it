@@ -59,6 +59,8 @@ const Encuesta = () => {
 };
 
 
+
+
 function CardPregunta() {
     return (
         <Card>
@@ -142,7 +144,7 @@ export const Pregunta = () => {
                             <Step key={label}>
                                 <StepLabel>{label}</StepLabel>
                             </Step>
-                        ))}
+                        ))}admin
                     </Stepper>
                     <React.Fragment>
                         {activeStep === steps.length ? (
