@@ -1,31 +1,41 @@
-import React from 'react';
-import {Card, CardContent, Container, Fab, Grid, Toolbar, Typography} from "@mui/material";
+import React, { useEffect } from 'react';
+import { Card, CardContent, Container, Fab, Grid, Toolbar, Typography } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
-import {useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from 'react-redux';
+import { getSurveys } from '../../store/slices/encuesta/thunks';
 
-const cards = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
 
 export const Encuesta = () => {
     const navigate = useNavigate();
+    const dispatch = useDispatch();
+
+    const { isLoading, surveys = [], page } = useSelector(state => state.surveys);
+
+    useEffect(() => {
+        dispatch(getSurveys());
+    }, [])
+
+    console.log(isLoading);
+
     return (
         <React.Fragment>
-            <Toolbar/>
-            <Container maxWidth="lg" sx={{mt: 4, mb: 4}}>
+            <Toolbar />
+            <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
                 <Typography component="h2" variant="h6" color="primary" gutterBottom>
                     Crear un formulario
                 </Typography>
                 <Grid container spacing={4}>
-                    {cards.map((card) => (
-                        <Grid item key={card} xs={12} sm={6} md={4}>
-                            <Card sx={{height: '100%', display: 'flex', flexDirection: 'column'}}>
-                                <CardContent sx={{flexGrow: 1}}>
+                    {surveys.map(({ id, descripcion, nombre }) => (
+                        <Grid item key={id} xs={12} sm={6} md={4}>
+                            <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+                                <CardContent sx={{ flexGrow: 1 }}>
                                     <Typography gutterBottom variant="h5" component="h2">
-                                        Encuesta
+                                        {nombre}
                                     </Typography>
                                     <Typography>
-                                        This is a media card. You can use this section to describe the
-                                        content.
+                                        {descripcion}
                                     </Typography>
                                 </CardContent>
                             </Card>
@@ -40,10 +50,10 @@ export const Encuesta = () => {
                     left: 'auto',
                     position: 'fixed',
                 }}
-                     color="primary"
-                     aria-label="add"
-                     onClick={() => navigate('/pregunta')}>
-                    <AddIcon/>
+                    color="primary"
+                    aria-label="add"
+                    onClick={() => navigate('/pregunta')}>
+                    <AddIcon />
                 </Fab>
             </Container>
         </React.Fragment>
