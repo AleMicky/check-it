@@ -1,1 +1,1 @@
-import { checkItApi } from "./checkitApi";
+export { checkItApi } from "./checkitApi";
