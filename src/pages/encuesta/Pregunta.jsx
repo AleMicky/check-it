@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
     Box,
     Button, Card, CardContent,
@@ -62,17 +62,38 @@ const Encuesta = () => {
 
 
 function CardPregunta() {
+
+    const [tipoRespuesta, setTipoRespuesto] = useState('opcion');
+
+    const handleChangeSelect = (event) => {
+        setTipoRespuesto(event.target.value);
+    };
+
     return (
         <Card>
             <CardContent>
                 <Stack direction="row" spacing={1}>
                     <TextField fullWidth
-                               label="Pregunta"
-                               variant="filled"/>
-                    <IconButton aria-label="imagen">
-                        <ImageIcon/>
-                    </IconButton>
+                        label="Pregunta"
+                        variant="filled" />
+
+                    <Box sx={{ minWidth: 260 }}>
+                        <FormControl fullWidth>
+                            <InputLabel>Varias opciones</InputLabel>
+                            <Select
+                                value={tipoRespuesta}
+                                label="Tipo Respuesta"
+                                variant="filled"
+                                onChange={handleChangeSelect}>
+                                <MenuItem value={'opcion'}>Varias opciones</MenuItem>
+                                <MenuItem value={'casiilla'}>Casilla</MenuItem>
+                            </Select>
+                        </FormControl>
+                    </Box>
                 </Stack>
+
+
+                
             </CardContent>
         </Card>
     );
@@ -86,7 +107,7 @@ const PreguntaRespuesta = () => {
             </Typography>
             <Grid container spacing={3}>
                 <Grid item xs={12}>
-                    <CardPregunta/>
+                    <CardPregunta />
                 </Grid>
             </Grid>
         </React.Fragment>
@@ -110,11 +131,11 @@ const steps = ['Encuesta', 'Pregunta', 'Resumen'];
 function getStepContent(step) {
     switch (step) {
         case 0:
-            return <Encuesta/>;
+            return <Encuesta />;
         case 1:
-            return <PreguntaRespuesta/>;
+            return <PreguntaRespuesta />;
         case 2:
-            return <Resumen/>;
+            return <Resumen />;
         default:
             throw new Error('Unknown step');
     }
@@ -133,18 +154,18 @@ export const Pregunta = () => {
     };
     return (
         <React.Fragment>
-            <Toolbar/>
-            <Container component="main" maxWidth="sm" sx={{mb: 4}}>
-                <Paper variant="outlined" sx={{my: {xs: 3, md: 6}, p: {xs: 2, md: 3}}}>
+            <Toolbar />
+            <Container component="main" maxWidth="sm" sx={{ mb: 4 }}>
+                <Paper variant="outlined" sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}>
                     <Typography component="h1" variant="h4" align="center">
                         Nuevo Encuesta
                     </Typography>
-                    <Stepper activeStep={activeStep} sx={{pt: 3, pb: 5}}>
+                    <Stepper activeStep={activeStep} sx={{ pt: 3, pb: 5 }}>
                         {steps.map((label) => (
                             <Step key={label}>
                                 <StepLabel>{label}</StepLabel>
                             </Step>
-                        ))} 
+                        ))}
                     </Stepper>
                     <React.Fragment>
                         {activeStep === steps.length ? (
@@ -161,9 +182,9 @@ export const Pregunta = () => {
                         ) : (
                             <React.Fragment>
                                 {getStepContent(activeStep)}
-                                <Box sx={{display: 'flex', justifyContent: 'flex-end'}}>
+                                <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
                                     {activeStep !== 0 && (
-                                        <Button onClick={handleBack} sx={{mt: 3, ml: 1}}>
+                                        <Button onClick={handleBack} sx={{ mt: 3, ml: 1 }}>
                                             Atras
                                         </Button>
                                     )}
@@ -171,7 +192,7 @@ export const Pregunta = () => {
                                     <Button
                                         variant="contained"
                                         onClick={handleNext}
-                                        sx={{mt: 3, ml: 1}}
+                                        sx={{ mt: 3, ml: 1 }}
                                     >
                                         {activeStep === steps.length - 1 ? 'Realizar Encuesta' : 'Siguente'}
                                     </Button>
