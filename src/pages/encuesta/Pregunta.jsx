@@ -99,8 +99,8 @@ function CardPregunta({ pregunta, nuevo, elminar, actualizar, nuevoResp, deleteR
                                 variant="outlined"
                                 onChange={handleChangeSelect}>
                                 <MenuItem value={'opcion'}>Varias opciones</MenuItem>
-                                <MenuItem value={'casiilla'}>Casilla</MenuItem>
-                                <MenuItem value={'texto'}>Texto Corto</MenuItem>
+                                {/* <MenuItem value={'casiilla'}>Casilla</MenuItem>
+                                <MenuItem value={'texto'}>Texto Corto</MenuItem> */}
                             </Select>
                         </FormControl>
                     </Box>
