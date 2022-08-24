@@ -30,6 +30,9 @@ import AddCircleIcon from '@mui/icons-material/AddCircle';
 import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import DoNotDisturbOnIcon from '@mui/icons-material/DoNotDisturbOn';
+import { useDispatch } from 'react-redux';
+import { newSurveys } from '../../store/slices/encuesta/thunks';
+import { checkItApi } from '../../api/checkItApi';
 
 const Encuesta = ({ encuesta, onEncuesta }) => {
 
@@ -152,7 +155,7 @@ function CardPregunta({ pregunta, nuevo, elminar, actualizar, nuevoResp, deleteR
 }
 
 const PreguntaRespuesta = ({ encuesta, nuevo, elminar, actualizar, nuevoRespuesta, deleteRespuesta, updateRespuesta }) => {
-    const { pregunta } = encuesta;
+    const { preguntas } = encuesta;
     return (
         <React.Fragment>
             <Typography variant="h6" gutterBottom>
@@ -160,7 +163,7 @@ const PreguntaRespuesta = ({ encuesta, nuevo, elminar, actualizar, nuevoRespuest
             </Typography>
             <Grid container spacing={3}>
                 {
-                    pregunta.map((pre) => (
+                    preguntas.map((pre) => (
                         <Grid item xs={12} key={pre.id} >
                             <CardPregunta pregunta={pre}
                                 nuevo={nuevo}
@@ -227,10 +230,14 @@ function getStepContent(
 
 export const Pregunta = () => {
 
+    const dispatch = useDispatch();
+
+
+
     const initialState = {
         nombre: '',
         descripcion: '',
-        pregunta: [
+        preguntas: [
             {
                 id: uuidv4(),
                 nombre: '',
@@ -258,7 +265,7 @@ export const Pregunta = () => {
 
     const newPregunta = () => {
         const prevEncuesta = { ...encuesta };
-        prevEncuesta.pregunta.push({
+        prevEncuesta.preguntas.push({
             id: uuidv4(),
             nombre: '',
             tipoRespuesta: 'opcion',
@@ -273,8 +280,8 @@ export const Pregunta = () => {
 
     const deletePregunta = (id) => {
         let prevEncuesta = { ...encuesta };
-        const arrayPregunta = prevEncuesta.pregunta.filter((item) => item.id !== id);
-        prevEncuesta.pregunta = arrayPregunta;
+        const arrayPregunta = prevEncuesta.preguntas.filter((item) => item.id !== id);
+        prevEncuesta.preguntas = arrayPregunta;
         setEncuesta(prevEncuesta);
     }
 
@@ -282,28 +289,28 @@ export const Pregunta = () => {
 
         let prevEncuesta = { ...encuesta };
 
-        const index = prevEncuesta.pregunta.findIndex(p => p.id === idPregunta);
+        const index = prevEncuesta.preguntas.findIndex(p => p.id === idPregunta);
 
-        const { respuestas, ...preguntaDetalle } = prevEncuesta.pregunta[index];
+        const { respuestas, ...preguntaDetalle } = prevEncuesta.preguntas[index];
 
         const newPregunta = {
             ...preguntaDetalle,
             respuestas: respuestas.filter((item) => item.id !== idRespuesta)
         }
-        prevEncuesta.pregunta[index] = newPregunta;
+        prevEncuesta.preguntas[index] = newPregunta;
         setEncuesta(prevEncuesta);
     }
 
 
     const newRespuesta = (id) => {
         let prevEncuesta = { ...encuesta };
-        const index = prevEncuesta.pregunta.findIndex(p => p.id === id);
-        const { respuestas, ...preguntaDetalle } = prevEncuesta.pregunta[index];
+        const index = prevEncuesta.preguntas.findIndex(p => p.id === id);
+        const { respuestas, ...preguntaDetalle } = prevEncuesta.preguntas[index];
         const newPregunta = {
             ...preguntaDetalle,
             respuestas: [...respuestas, { id: uuidv4(), nombre: '', }]
         }
-        prevEncuesta.pregunta[index] = newPregunta;
+        prevEncuesta.preguntas[index] = newPregunta;
         setEncuesta(prevEncuesta);
     }
 
@@ -311,14 +318,14 @@ export const Pregunta = () => {
 
         let prevEncuesta = { ...encuesta };
 
-        const pregutan = prevEncuesta.pregunta.map((obj) => {
+        const pregutan = prevEncuesta.preguntas.map((obj) => {
             if (obj.id === idPregunta) {
                 return { ...obj, nombre: pregunta }
             }
             return obj
         })
 
-        prevEncuesta.pregunta = pregutan;
+        prevEncuesta.preguntas = pregutan;
 
         setEncuesta(prevEncuesta);
 
@@ -328,9 +335,9 @@ export const Pregunta = () => {
 
         let prevEncuesta = { ...encuesta };
 
-        const index = prevEncuesta.pregunta.findIndex(p => p.id === idPregunta);
+        const index = prevEncuesta.preguntas.findIndex(p => p.id === idPregunta);
 
-        const { respuestas, ...preguntaDetalle } = prevEncuesta.pregunta[index];
+        const { respuestas, ...preguntaDetalle } = prevEncuesta.preguntas[index];
 
         const newPregunta = {
             ...preguntaDetalle,
@@ -342,18 +349,19 @@ export const Pregunta = () => {
             })
         }
 
-        prevEncuesta.pregunta[index] = newPregunta;
+        prevEncuesta.preguntas[index] = newPregunta;
         setEncuesta(prevEncuesta);
     }
 
 
-    const handleNext = () => {
+    const handleNext = async () => {
         setActiveStep(activeStep + 1);
         if (activeStep === 2) {
-            console.log(encuesta);
-        }
+            dispatch(newSurveys(encuesta));
+         }
     };
 
+ 
     const handleBack = () => {
         setActiveStep(activeStep - 1);
     };

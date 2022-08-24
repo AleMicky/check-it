@@ -16,9 +16,13 @@ export const encuestaSlice = createSlice({
             state.page = action.payload.page;
             state.surveys = action.payload.surveys;
         },
+        addNewSurveys: (state, action ) => {
+            state.surveys.push( action.payload );
+            state.isLoading = false;
+        },
     }
 });
 
 
 // Action creators are generated for each case reducer function
-export const { startLoadingSurveys, setSurveys } = encuestaSlice.actions;
+export const { startLoadingSurveys, setSurveys, addNewSurveys } = encuestaSlice.actions;
