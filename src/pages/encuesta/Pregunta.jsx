@@ -69,7 +69,7 @@ const Encuesta = ({ encuesta, onEncuesta }) => {
 
 
 
-function CardPregunta({ pregunta, nuevo, elminar, actualizar, nuevoResp, deleteRespuesta }) {
+function CardPregunta({ pregunta, nuevo, elminar, actualizar, nuevoResp, deleteRespuesta, updateRespuesta }) {
 
     const { id, nombre, respuestas, tipoRespuesta } = pregunta;
 
@@ -117,7 +117,10 @@ function CardPregunta({ pregunta, nuevo, elminar, actualizar, nuevoResp, deleteR
                                         <TextField
                                             fullWidth
                                             label={`Opcion ${i + 1}`}
-                                             variant="outlined"
+                                            variant="outlined"
+                                            value={resp.nombre}
+                                            onChange={e => updateRespuesta(id, resp.id, e.target.value)}
+
                                         />
                                     </Box>
                                     <IconButton
@@ -148,7 +151,7 @@ function CardPregunta({ pregunta, nuevo, elminar, actualizar, nuevoResp, deleteR
     );
 }
 
-const PreguntaRespuesta = ({ encuesta, nuevo, elminar, actualizar, nuevoRespuesta, deleteRespuesta }) => {
+const PreguntaRespuesta = ({ encuesta, nuevo, elminar, actualizar, nuevoRespuesta, deleteRespuesta, updateRespuesta }) => {
     const { pregunta } = encuesta;
     return (
         <React.Fragment>
@@ -164,7 +167,9 @@ const PreguntaRespuesta = ({ encuesta, nuevo, elminar, actualizar, nuevoRespuest
                                 elminar={elminar}
                                 actualizar={actualizar}
                                 nuevoResp={nuevoRespuesta}
-                                deleteRespuesta={deleteRespuesta} />
+                                deleteRespuesta={deleteRespuesta}
+                                updateRespuesta={updateRespuesta}
+                            />
                         </Grid>
                     ))
                 }
@@ -195,7 +200,8 @@ function getStepContent(
     deletePregunta,
     updatePregunta,
     newRespuesta,
-    deleteRespuesta) {
+    deleteRespuesta,
+    updateRespuesta) {
     switch (step) {
         case 0:
             return <Encuesta
@@ -210,6 +216,7 @@ function getStepContent(
                 actualizar={updatePregunta}
                 nuevoRespuesta={newRespuesta}
                 deleteRespuesta={deleteRespuesta}
+                updateRespuesta={updateRespuesta}
             />;
         case 2:
             return <Resumen encuesta={encuesta} />;
@@ -284,10 +291,7 @@ export const Pregunta = () => {
             respuestas: respuestas.filter((item) => item.id !== idRespuesta)
         }
         prevEncuesta.pregunta[index] = newPregunta;
-
-
         setEncuesta(prevEncuesta);
-
     }
 
 
@@ -321,9 +325,25 @@ export const Pregunta = () => {
     }
 
     const updateRespuesta = (idPregunta, idRespuesta, respuesta) => {
+
         let prevEncuesta = { ...encuesta };
-        const indexPregunta = prevEncuesta.pregunta.findIndex(p => p.id === idPregunta);
-        console.log(indexPregunta);
+
+        const index = prevEncuesta.pregunta.findIndex(p => p.id === idPregunta);
+
+        const { respuestas, ...preguntaDetalle } = prevEncuesta.pregunta[index];
+
+        const newPregunta = {
+            ...preguntaDetalle,
+            respuestas: respuestas.map((obj) => {
+                if (obj.id === idRespuesta) {
+                    return { ...obj, nombre: respuesta }
+                }
+                return obj
+            })
+        }
+
+        prevEncuesta.pregunta[index] = newPregunta;
+        setEncuesta(prevEncuesta);
     }
 
 
@@ -373,7 +393,8 @@ export const Pregunta = () => {
                                     deletePregunta,
                                     updatePregunta,
                                     newRespuesta,
-                                    deleteRespuesta)}
+                                    deleteRespuesta,
+                                    updateRespuesta)}
                                 <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
                                     {activeStep !== 0 && (
                                         <Button onClick={handleBack} sx={{ mt: 3, ml: 1 }}>
