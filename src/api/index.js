@@ -1,1 +1,0 @@
-export { checkItApi } from "./checkitApi";

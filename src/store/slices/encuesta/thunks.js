@@ -1,5 +1,5 @@
 import { setSurveys, startLoadingSurveys } from "./encuestaSlice";
-import { checkItApi } from "../../../api";
+import { checkItApi } from "../../../api/checkItApi";
 
 export const getSurveys = (page = 0) => {
 
